@@ -1,6 +1,42 @@
 # managed_allocator
 A C++ allocator based on cudaMallocManaged
 
+To create a custom C++ allocator which allocates storage using `cudaMallocManaged`, we need to make a new type and give it `.allocate()` and `.deallocate()` functions:
+
+The `.allocate()` function calls `cudaMallocManaged` and throws an exception if it fails:
+
+```
+    value_type* allocate(size_t n)
+    {
+      value_type* result = nullptr;
+  
+      cudaError_t error = cudaMallocManaged(&result, n*sizeof(T), cudaMemAttachGlobal);
+  
+      if(error != cudaSuccess)
+      {
+        throw thrust::system_error(error, thrust::cuda_category(), "managed_allocator::allocate(): cudaMallocManaged");
+      }
+  
+      return result;
+    }
+```
+
+The `.deallocate()` function can just call `cudaFree()`:
+
+```
+    void deallocate(value_type* ptr, size_t)
+    {
+      cudaError_t error = cudaFree(ptr);
+  
+      if(error != cudaSuccess)
+      {
+        throw thrust::system_error(error, thrust::cuda_category(), "managed_allocator::deallocate(): cudaFree");
+      }
+    }
+```
+
+Here's a program which demonstrates some of the different things you can do with it:
+
 ```
 #include "managed_allocator.hpp"
 #include <thrust/fill.h>
