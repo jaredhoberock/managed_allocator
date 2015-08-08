@@ -1,7 +1,8 @@
-# managed_allocator
-A C++ allocator based on cudaMallocManaged
+# `managed_allocator`
 
-To create a custom C++ allocator which allocates storage using `cudaMallocManaged`, we need to make a new type and give it `.allocate()` and `.deallocate()` functions:
+A C++ allocator based on `cudaMallocManaged()`.
+
+To create a custom C++ allocator which allocates storage using `cudaMallocManaged`, we need to make a class and give it `.allocate()` and `.deallocate()` functions:
 
 The `.allocate()` function calls `cudaMallocManaged` and throws an exception if it fails:
 
