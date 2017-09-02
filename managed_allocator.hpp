@@ -34,3 +34,15 @@ class managed_allocator
     }
 };
 
+template<class T1, class T2>
+bool operator==(const managed_allocator<T1>&, const managed_allocator<T2>&)
+{
+  return true;
+}
+
+template<class T1, class T2>
+bool operator!=(const managed_allocator<T1>& lhs, const managed_allocator<T2>& rhs)
+{
+  return !(lhs == rhs);
+}
+
