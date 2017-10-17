@@ -8,6 +8,11 @@ class managed_allocator
 {
   public:
     using value_type = T;
+
+    managed_allocator() {}
+
+    template<class U>
+    managed_allocator(const managed_allocator<U>&) {}
   
     value_type* allocate(size_t n)
     {
