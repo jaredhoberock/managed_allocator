@@ -8,6 +8,8 @@ class managed_allocator
 {
   public:
     using value_type = T;
+    using reference = T&;
+    using const_reference = const T&;
 
     managed_allocator() {}
 
